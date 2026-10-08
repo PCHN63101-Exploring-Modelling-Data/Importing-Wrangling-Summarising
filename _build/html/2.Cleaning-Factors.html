@@ -62,7 +62,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Reshaping and Wrangling" href="3.Reshape-Wide-Long.html" />
-    <link rel="prev" title="Importing, Inspecting, and Cleaning Data" href="1.Importing-Inspecting.html" />
+    <link rel="prev" title="Importing and Inspecting Data" href="1.Importing-Inspecting.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -181,7 +181,7 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing, Inspecting, and Cleaning Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing and Inspecting Data</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Cleaning Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.Reshape-Wide-Long.html">Reshaping and Wrangling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.Summarising-Data.html">Summarising Data</a></li>
@@ -392,7 +392,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-a-factor">Converting to a Factor</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-meaningful-order">Setting a Meaningful Order</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-participants-in-each-category">Counting Participants in Each Category</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-points">Key Points</a></li>
 </ul>
 </li>
 </ul>
@@ -510,7 +509,7 @@ document.write(`
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;School&quot; &quot;UG&quot;     &quot;PG&quot;     &quot;pg&quot;   
 </pre></div>
 </div>
-<p>The only issue appear to be that both <code class="docutils literal notranslate"><span class="pre">&quot;pg&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;PG&quot;</span></code> are used</p>
+<p>The only issue appears to be that both <code class="docutils literal notranslate"><span class="pre">&quot;pg&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;PG&quot;</span></code> are used</p>
 </section>
 <section id="changing-a-variable-type">
 <h2>Changing a Variable Type<a class="headerlink" href="#changing-a-variable-type" title="Link to this heading">#</a></h2>
@@ -598,7 +597,7 @@ NAs introduced by coercion
 <li><p><code class="docutils literal notranslate"><span class="pre">is.na(messyDat)</span></code> checks every cell in the data frame and returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> where the value is missing (<code class="docutils literal notranslate"><span class="pre">NA</span></code>) and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> otherwise.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">colSums()</span></code> adds these logical values within each column. In R, <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> is treated as <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> as <code class="docutils literal notranslate"><span class="pre">0</span></code>, so the result is the number of missing values in each variable.</p></li>
 </ul>
-<p>The output tells us that there is one missing value in the <code class="docutils literal notranslate"><span class="pre">pcp_id</span></code> column, one in the <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> column and one in the <code class="docutils literal notranslate"><span class="pre">incongruent_rt</span></code> column. What you should do about these is again a matter of judgment. If age has been collected to describe the sample, a missing value is probably not something to worry about it. A missing participant identifier is more unusual, so let’s have a look at that row:</p>
+<p>The output tells us that there is one missing value in the <code class="docutils literal notranslate"><span class="pre">pcp_id</span></code> column, one in the <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> column and one in the <code class="docutils literal notranslate"><span class="pre">incongruent_rt</span></code> column. What you should do about these is again a matter of judgment. If age has been collected to describe the sample, a missing value is probably not something to worry about. A missing participant identifier is more unusual, so let’s have a look at that row:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_id</span><span class="p">),]</span>
 </pre></div>
 </div>
@@ -642,7 +641,7 @@ NAs introduced by coercion
 </section>
 <section id="converting-to-a-factor">
 <h3>Converting to a Factor<a class="headerlink" href="#converting-to-a-factor" title="Link to this heading">#</a></h3>
-<p>Convert the education variable to a factor with <code class="docutils literal notranslate"><span class="pre">factor()</span></code>:</p>
+<p>We already standardised the labels earlier, so we can now convert directly using <code class="docutils literal notranslate"><span class="pre">factor()</span></code></p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -688,20 +687,11 @@ NAs introduced by coercion
      3      2      2 
 </pre></div>
 </div>
-<p>To include missing values in the table, use:</p>
+<p>If we had missing values in the table, we could include them with:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">table</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">,</span><span class="w"> </span><span class="n">useNA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ifany&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="key-points">
-<h3>Key Points<a class="headerlink" href="#key-points" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Use factors for variables that represent categories.</p></li>
-<li><p>Check category labels before converting a variable to a factor.</p></li>
-<li><p>Standardise inconsistent labels first.</p></li>
-<li><p>Set factor levels explicitly when the categories have a meaningful order.</p></li>
-<li><p>The level order affects tables, plots, and statistical models.</p></li>
-</ul>
+<p>Factors are R’s way of representing categorical variables. Before converting a variable to a factor, it is worth checking its unique values and standardising any inconsistent labels. The <code class="docutils literal notranslate"><span class="pre">levels</span></code> argument lets you define both the categories and their order, which matters for tables, plots, and statistical models. When categories have a natural progression, as education levels do, setting <code class="docutils literal notranslate"><span class="pre">ordered</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> makes that structure explicit.</p>
 </section>
 </section>
 </section>
@@ -742,7 +732,7 @@ NAs introduced by coercion
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Importing, Inspecting, and Cleaning Data</p>
+        <p class="prev-next-title">Importing and Inspecting Data</p>
       </div>
     </a>
     <a class="right-next"
@@ -781,7 +771,6 @@ NAs introduced by coercion
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-a-factor">Converting to a Factor</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-meaningful-order">Setting a Meaningful Order</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-participants-in-each-category">Counting Participants in Each Category</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-points">Key Points</a></li>
 </ul>
 </li>
 </ul>

@@ -181,7 +181,7 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing, Inspecting, and Cleaning Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing and Inspecting Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.Cleaning-Factors.html">Cleaning Data</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Reshaping and Wrangling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.Summarising-Data.html">Summarising Data</a></li>
@@ -509,7 +509,7 @@ document.write(`
 </section>
 <section id="reshaping-data-from-wide-to-long">
 <h2>Reshaping data from wide to long<a class="headerlink" href="#reshaping-data-from-wide-to-long" title="Link to this heading">#</a></h2>
-<p>More often that not if you want to switch between formats you will be going from wide to long. The reshape() function can do both directions but we’ll concentrate on wide to long in this section.</p>
+<p>More often than not if you want to switch between formats you will be going from wide to long. The <code class="docutils literal notranslate"><span class="pre">reshape()</span></code> function can do both directions but we’ll concentrate on wide to long in this section.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
@@ -562,7 +562,7 @@ document.write(`
 <span class="nf">rownames</span><span class="p">(</span><span class="n">messyDatLong</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NULL</span><span class="w"> </span>
 </pre></div>
 </div>
-<p>The code above creates a new dataframe called <code class="docutils literal notranslate"><span class="pre">messyDatLong</span></code> which is now in the long format. The <code class="docutils literal notranslate"><span class="pre">rownames(messyDatLong)</span> <span class="pre">&lt;-</span> <span class="pre">NULL</span> </code> command removes row names from the data frame that reshape() adds to help you see what it has done. In this case we don’t really need that information so we removed them.</p>
+<p>The code above creates a new dataframe called <code class="docutils literal notranslate"><span class="pre">messyDatLong</span></code> which is now in the long format. The <code class="docutils literal notranslate"><span class="pre">rownames(messyDatLong)</span> <span class="pre">&lt;-</span> <span class="pre">NULL</span> </code> command removes row names from the data frame that <code class="docutils literal notranslate"><span class="pre">reshape()</span></code> adds to help you see what it has done. In this case we don’t really need that information so we have removed them.</p>
 <p>We can verify that the data frame is now in long format with <code class="docutils literal notranslate"><span class="pre">str()</span></code></p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">str</span><span class="p">(</span><span class="n">messyDatLong</span><span class="p">)</span>
 </pre></div>
@@ -585,7 +585,7 @@ document.write(`
 </pre></div>
 </div>
 <p>The output tells us that there are now twice as many rows (2 per participant) and we have new columns <code class="docutils literal notranslate"><span class="pre">condition</span></code> and <code class="docutils literal notranslate"><span class="pre">reaction_time</span></code>. One to identify the experimental condition and one to identify the associated reaction time. How the reshape was performed has also been stored as metadata.</p>
-<p>There is one remaining issue which you may have noticed. condition is chr but it should really be a factor. Let’s fix that:</p>
+<p>There is one remaining issue which you may have noticed. <code class="docutils literal notranslate"><span class="pre">condition</span></code> is chr but it should really be a factor. Let’s fix that:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDatLong</span><span class="o">$</span><span class="n">condition</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="n">messyDatLong</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
 <span class="nf">levels</span><span class="p">(</span><span class="n">messyDatLong</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
 </pre></div>
@@ -593,7 +593,7 @@ document.write(`
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;congruent&quot;   &quot;incongruent&quot;
 </pre></div>
 </div>
-<p>congruent and incongruent are not naturally ordered so we can leave the default alphabetical ordering used by the order() function.</p>
+<p>congruent and incongruent are not naturally ordered so we can leave the default alphabetical ordering used by the <code class="docutils literal notranslate"><span class="pre">order()</span></code> function.</p>
 </section>
 <section id="creating-new-variables">
 <h2>Creating new variables<a class="headerlink" href="#creating-new-variables" title="Link to this heading">#</a></h2>
@@ -601,7 +601,7 @@ document.write(`
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDatLong</span><span class="o">$</span><span class="n">slow</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">messyDatLong</span><span class="o">$</span><span class="n">reaction_time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">3</span>
 </pre></div>
 </div>
-<p>The right hand side tests wether values in the reaction_time column are over 3 seconds. The resulting vector of <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> values is then assigned to <code class="docutils literal notranslate"><span class="pre">messyDatLong$slow</span></code>. There was no <code class="docutils literal notranslate"><span class="pre">slow</span></code> column in <code class="docutils literal notranslate"><span class="pre">messyDatLong</span></code> so R simply created one. Had there already been a column called <code class="docutils literal notranslate"><span class="pre">slow</span></code> it would have been overwritten.</p>
+<p>The right hand side tests whether values in the reaction_time column are over 3 seconds. The resulting vector of <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> values is then assigned to <code class="docutils literal notranslate"><span class="pre">messyDatLong$slow</span></code>. There was no <code class="docutils literal notranslate"><span class="pre">slow</span></code> column in <code class="docutils literal notranslate"><span class="pre">messyDatLong</span></code> so R simply created one. Had there already been a column called <code class="docutils literal notranslate"><span class="pre">slow</span></code> it would have been overwritten.</p>
 <p>We can verify that this has worked using the <code class="docutils literal notranslate"><span class="pre">head()</span></code> function which simply displays the first few rows of the data frame:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">messyDatLong</span><span class="p">)</span>
 </pre></div>
@@ -619,36 +619,9 @@ document.write(`
 <h3>Creating separate variables from one column<a class="headerlink" href="#creating-separate-variables-from-one-column" title="Link to this heading">#</a></h3>
 <p>Sometimes a column will contain information about more than one variable. The example generated below contains accuracy data from two participants who completed four experimental conditions. The <code class="docutils literal notranslate"><span class="pre">condition</span></code> column combines two pieces of information:</p>
 <ul class="simple">
-<li><p><strong>Cue type:</strong> <code class="docutils literal notranslate"><span class="pre">Visual</span></code> or <code class="docutils literal notranslate"><span class="pre">Audio</span></code></p></li>
-<li><p><strong>Difficulty:</strong> <code class="docutils literal notranslate"><span class="pre">Easy</span></code> or <code class="docutils literal notranslate"><span class="pre">Hard</span></code></p></li>
+<li><p>Cue type: <code class="docutils literal notranslate"><span class="pre">Visual</span></code> or <code class="docutils literal notranslate"><span class="pre">Audio</span></code></p></li>
+<li><p>Difficulty: <code class="docutils literal notranslate"><span class="pre">Easy</span></code> or <code class="docutils literal notranslate"><span class="pre">Hard</span></code></p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Condition</p></th>
-<th class="head"><p>Cue type</p></th>
-<th class="head"><p>Difficulty</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VisualEasy</span></code></p></td>
-<td><p>visual</p></td>
-<td><p>easy</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VisualHard</span></code></p></td>
-<td><p>visual</p></td>
-<td><p>hard</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AudioEasy</span></code></p></td>
-<td><p>audio</p></td>
-<td><p>easy</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AudioHard</span></code></p></td>
-<td><p>audio</p></td>
-<td><p>hard</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">exp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
 <span class="w">  </span><span class="n">participant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">),</span>
 <span class="w">  </span><span class="n">condition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
@@ -676,7 +649,7 @@ document.write(`
 6              2 VisualHard       68
 </pre></div>
 </div>
-<p>As it stands the condition column contains information about two independent variables: Cue Type and Difficulty. We always want our independent variables to have their own column/variable in R data frames.</p>
+<p>As it stands the <code class="docutils literal notranslate"><span class="pre">condition</span></code> column contains information about two independent variables: Cue Type and Difficulty. We always want our independent variables to have their own column/variable in R data frames.</p>
 <p>The code below creates two new variables, <code class="docutils literal notranslate"><span class="pre">cue_type</span></code> and <code class="docutils literal notranslate"><span class="pre">difficulty</span></code>, from the <code class="docutils literal notranslate"><span class="pre">condition</span></code> column.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">exp</span><span class="o">$</span><span class="n">cue_type</span><span class="p">[</span><span class="n">exp</span><span class="o">$</span><span class="n">condition</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;VisualEasy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VisualHard&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;visual&quot;</span>
 <span class="n">exp</span><span class="o">$</span><span class="n">cue_type</span><span class="p">[</span><span class="n">exp</span><span class="o">$</span><span class="n">condition</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;AudioEasy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;AudioHard&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;audio&quot;</span>
@@ -702,14 +675,13 @@ document.write(`
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>``  participant_id  condition accuracy cue_type difficulty
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  participant_id  condition accuracy cue_type difficulty
 1              1 VisualEasy       92   visual       easy
 2              1 VisualHard       75   visual       hard
 3              1  AudioEasy       88    audio       easy
 4              1  AudioHard       70    audio       hard
 5              2 VisualEasy       95   visual       easy
-6              2 VisualHard       68   visual       hard</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+6              2 VisualHard       68   visual       hard
 </pre></div>
 </div>
 </section>

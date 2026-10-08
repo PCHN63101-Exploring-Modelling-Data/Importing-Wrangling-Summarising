@@ -181,7 +181,7 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing, Inspecting, and Cleaning Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing and Inspecting Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.Cleaning-Factors.html">Cleaning Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.Reshape-Wide-Long.html">Reshaping and Wrangling</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Summarising Data</a></li>
@@ -395,7 +395,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="summarising-data">
 <h1>Summarising Data<a class="headerlink" href="#summarising-data" title="Link to this heading">#</a></h1>
-<p>Once you are happy that your data is clean and in the shape you want it (wide or long), you’ll usually want to summarise it and produce some descriptive statistics. If your data are in wide format, using summary() is a straightforward way to get a fair bit of useful information.</p>
+<p>Once you are happy that your data are clean and in the shape you want it (wide or long), you’ll usually want to summarise it and produce some descriptive statistics. If your data are in wide format, using <code class="docutils literal notranslate"><span class="pre">summary()</span></code> is a straightforward way to get a fair bit of useful information.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">messyDat</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -409,7 +409,7 @@ document.write(`
                     NA&#39;s   :1                       NA&#39;s   :1  
 </pre></div>
 </div>
-<p>This tells us a fair bit including min, max, mean and NAs. Because we cleaned these data we also have useful summaries of education and age, which we didn’t when we first imported it. In Psychology we generally also want to know standard deviations. We can get these ourselves fairly easily though.</p>
+<p>This tells us quite a lot including min, max, mean and NAs. Because we cleaned these data we also have useful summaries of education and age, which we didn’t when we first imported it. In Psychology we generally also want to know standard deviations. We can get these ourselves fairly easily though.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sd_rt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sapply</span><span class="p">(</span>
 <span class="w">  </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">messyDat</span><span class="p">[</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;congruent_rt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;incongruent_rt&quot;</span><span class="p">,</span><span class="s">&quot;pcp_age&quot;</span><span class="p">)],</span>
 <span class="w">  </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sd</span><span class="p">,</span>
@@ -417,11 +417,11 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>This code calculates the standard deviation for the congruent_rt and incongruent_rt columns, ignoring missing values.</p>
+<p>This code calculates the standard deviation for the <code class="docutils literal notranslate"><span class="pre">congruent_rt</span></code>, <code class="docutils literal notranslate"><span class="pre">incongruent_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">age</span></code> columns, ignoring missing values.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">messyDat[c(&quot;congruent_rt&quot;,</span> <span class="pre">&quot;incongruent_rt&quot;,&quot;pcp_age&quot;)]</span></code> extracts those three columns from the data frame.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sapply()</span></code> applies the same function to each selected column.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> </code>supplies the data to work through.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> </code> supplies the data to work through.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">FUN</span> <span class="pre">=</span> <span class="pre">sd</span></code> tells R to calculate the standard deviation.</p></li>
 </ul>
 <p>The result is stored in <code class="docutils literal notranslate"><span class="pre">sd_rt</span></code>, a named numeric vector:</p>
@@ -432,11 +432,11 @@ document.write(`
      0.4099129      0.5311748      1.5165751 
 </pre></div>
 </div>
-<p>We could have got each of those values with the simpler <code class="docutils literal notranslate"><span class="pre">sd(messyDat$congruent_rt,na.rm</span> <span class="pre">=</span> <span class="pre">T)</span></code> repeated three times. But if you have many columns for which you want to work out the SDs, sapply will soon be a lot more efficient.</p>
+<p>We could have obtained each of those values using the simpler <code class="docutils literal notranslate"><span class="pre">sd(messyDat$congruent_rt,</span> <span class="pre">na.rm</span> <span class="pre">=</span> <span class="pre">TRUE)</span></code>, repeated once for each variable. But if you had 20 columns, <code class="docutils literal notranslate"><span class="pre">sapply()</span></code> would handle all of them in the same three lines, and swapping in a different function for <code class="docutils literal notranslate"><span class="pre">FUN</span></code> makes it just as easy to calculate the mean, median, or any other statistic across those columns.</p>
 <section id="summarising-long-data">
 <h2>Summarising Long Data<a class="headerlink" href="#summarising-long-data" title="Link to this heading">#</a></h2>
 <p>In long-format data, each participant usually has more than one row: one row for each condition, time point, or measurement. This means that <code class="docutils literal notranslate"><span class="pre">summary()</span></code> and <code class="docutils literal notranslate"><span class="pre">sapply()</span></code> calculate statistics for the whole <code class="docutils literal notranslate"><span class="pre">reaction_time</span></code> column rather than separately for each condition.</p>
-<p>To calculate a separate mean for each condition, use aggregate().</p>
+<p>To calculate a separate mean for each condition, use <code class="docutils literal notranslate"><span class="pre">aggregate()</span></code>.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">aggregate</span><span class="p">(</span><span class="n">reaction_time</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">condition</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">messyDatLong</span><span class="p">,</span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">,</span><span class="n">na.rm</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -445,7 +445,7 @@ document.write(`
 2 incongruent      3.476667
 </pre></div>
 </div>
-<p>In <code class="docutils literal notranslate"><span class="pre">aggregate()</span></code>, the variable on the left of <code class="docutils literal notranslate"><span class="pre">~</span></code> is the outcome being summarised, and the variable on the right is the grouping variable.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">aggregate()</span></code>, the variable on the left of the tilde (<code class="docutils literal notranslate"><span class="pre">~</span></code>) is the outcome being summarised, and the variable on the right is the grouping variable.</p>
 <p>The formula <code class="docutils literal notranslate"><span class="pre">reaction_time</span> <span class="pre">~</span> <span class="pre">condition</span></code> can be read as:</p>
 <blockquote>
 <div><p>Calculate a summary of <code class="docutils literal notranslate"><span class="pre">reaction_time</span></code>, separately for each level of <code class="docutils literal notranslate"><span class="pre">condition</span></code>.</p>
@@ -467,7 +467,7 @@ document.write(`
 4   visual       hard     71.5
 </pre></div>
 </div>
-<p>Now we have a mean for eight conditions in the experiment. <code class="docutils literal notranslate"><span class="pre">accuracy</span> <span class="pre">~</span> <span class="pre">cue_type</span> <span class="pre">+</span> <span class="pre">difficulty</span></code> is saying summarise accuracy for every level in cue type and difficulty.</p>
+<p>Now we have a mean for all four conditions in the experiment. <code class="docutils literal notranslate"><span class="pre">accuracy</span> <span class="pre">~</span> <span class="pre">cue_type</span> <span class="pre">+</span> <span class="pre">difficulty</span></code> is saying summarise accuracy for every level in cue type and difficulty.</p>
 </section>
 </section>
 
