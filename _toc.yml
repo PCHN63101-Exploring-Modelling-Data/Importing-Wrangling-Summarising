@@ -1,0 +1,11 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: 0.intro
+chapters:
+- file: 1.Importing-Inspecting
+- file: 2.Cleaning-Factors
+- file: 3.Reshape-Wide-Long
+- file: 4.Summarising-Data 
+- file: summary
