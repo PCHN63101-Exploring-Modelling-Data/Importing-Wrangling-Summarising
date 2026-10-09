@@ -1,0 +1,818 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cleaning Data &#8212; Importing, Wrangling and Summarising Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/test.css?v=90b7ad94" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2.Cleaning-Factors';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reshaping and Wrangling" href="3.Reshape-Wide-Long.html" />
+    <link rel="prev" title="Importing and Inspecting Data" href="1.Importing-Inspecting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="0.intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Importing, Wrangling and Summarising Data - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Importing, Wrangling and Summarising Data - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="0.intro.html">
+                    Introduction: Importing Wrangling & Summarising
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1.Importing-Inspecting.html">Importing and Inspecting Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cleaning Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.Reshape-Wide-Long.html">Reshaping and Wrangling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.Summarising-Data.html">Summarising Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PCHN63101-Exploring-Modelling-Data/Importing-Wrangling-Summarising" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PCHN63101-Exploring-Modelling-Data/Importing-Wrangling-Summarising/issues/new?title=Issue%20on%20page%20%2F2.Cleaning-Factors.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/2.Cleaning-Factors.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cleaning Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renaming-columns">Renaming Columns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-unique-values">Identifying Unique Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-values">Replacing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-a-variable-type">Changing a Variable Type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicate-rows">Duplicate Rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-nas">Finding NAs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#factors-and-categorical-variables">Factors and Categorical Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-factors">Why Use Factors?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-a-factor">Converting to a Factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-meaningful-order">Setting a Meaningful Order</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-participants-in-each-category">Counting Participants in Each Category</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cleaning-data">
+<h1>Cleaning Data<a class="headerlink" href="#cleaning-data" title="Link to this heading">#</a></h1>
+<p>Before making changes to a dataset, you should first understand what each variable represents. Ideally, the data will include a README file or data dictionary explaining the variables, their measurement scales, and any coding conventions.</p>
+<p>If the data come from your own experiment, you will hopefully already know this information. In some cases, however, you may only have the dataset itself and need to make informed assumptions.</p>
+<p>For this example, assume we only know that the data come from a Stroop experiment. We might reasonably interpret the variables as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Likely meaning</p></th>
+<th class="head"><p>Appropriate type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">P</span></code></p></td>
+<td><p>Unique participant identifier</p></td>
+<td><p>Character</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">age</span></code></p></td>
+<td><p>Participant age in years</p></td>
+<td><p>Numeric</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CongruentReactionTime</span></code></p></td>
+<td><p>Reaction time, in seconds, for congruent trials</p></td>
+<td><p>Numeric</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Incongruent.RT</span></code></p></td>
+<td><p>Reaction time, in seconds, for incongruent trials</p></td>
+<td><p>Numeric</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Edu</span></code></p></td>
+<td><p>Highest education level achieved</p></td>
+<td><p>Factor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Completed</span></code></p></td>
+<td><p>Whether the participant completed the experiment</p></td>
+<td><p>Logical</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Once you understand the variables, you can begin cleaning the data.</p>
+<section id="renaming-columns">
+<h2>Renaming Columns<a class="headerlink" href="#renaming-columns" title="Link to this heading">#</a></h2>
+<p>The original variable names are inconsistent: some are abbreviated, some are descriptive, and they use different naming conventions. We can standardise them with <code class="docutils literal notranslate"><span class="pre">names()</span></code>:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">names</span><span class="p">(</span><span class="n">messyDat</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">  </span><span class="s">&quot;pcp_id&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;pcp_age&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;congruent_rt&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;incongruent_rt&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;pcp_edu_level&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;completed_exp&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">names()</span></code> function can display the names of variables in an object or assign a new vector of names.</p>
+<p>Check the updated variable names:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">names</span><span class="p">(</span><span class="n">messyDat</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;pcp_id&quot;         &quot;pcp_age&quot;        &quot;congruent_rt&quot;
+[4] &quot;incongruent_rt&quot; &quot;pcp_edu_level&quot;  &quot;completed_exp&quot;
+</pre></div>
+</div>
+</section>
+<section id="identifying-unique-values">
+<h2>Identifying Unique Values<a class="headerlink" href="#identifying-unique-values" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> variable is currently stored as a character variable, but ages should be numeric. The <code class="docutils literal notranslate"><span class="pre">unique()</span></code> function can help identify unusual values:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">unique</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;18&quot;       &quot;19&quot;       &quot;&quot;         &quot;20&quot;       &quot;22&quot;       &quot;-20&quot;      &quot;eighteen&quot; &quot;21&quot;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">unique()</span></code> returns each distinct value only once. For example, even if <code class="docutils literal notranslate"><span class="pre">&quot;19&quot;</span></code> occurred 100 times, it would appear only once in this output.</p>
+<p>This reveals several problems:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;eighteen&quot;</span></code> has been entered as text rather than as the number <code class="docutils literal notranslate"><span class="pre">18</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;-20&quot;</span></code> is not a plausible age.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> represents a missing value.</p></li>
+</ul>
+<p>Because a column in a data frame must contain one consistent data type, the presence of text causes R to import the entire <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> column as character data.</p>
+</section>
+<section id="replacing-values">
+<h2>Replacing Values<a class="headerlink" href="#replacing-values" title="Link to this heading">#</a></h2>
+<p>First, replace <code class="docutils literal notranslate"><span class="pre">&quot;eighteen&quot;</span></code> with <code class="docutils literal notranslate"><span class="pre">18</span></code>:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">[</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;eighteen&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">18</span>
+</pre></div>
+</div>
+<p>In plain language: within <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code>, find rows where the value is <code class="docutils literal notranslate"><span class="pre">&quot;eighteen&quot;</span></code> and replace it with <code class="docutils literal notranslate"><span class="pre">18</span></code>.</p>
+<p>However, the variable is still character data:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">class</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;character&quot;
+</pre></div>
+</div>
+<p>Although <code class="docutils literal notranslate"><span class="pre">18</span></code> was entered as a number, R coerces it to character because the rest of the column is still character data.</p>
+<p>Let’s also take a look at the <code class="docutils literal notranslate"><span class="pre">pcp_edu_level</span></code> unique values:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">unique</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;School&quot; &quot;UG&quot;     &quot;PG&quot;     &quot;pg&quot;   
+</pre></div>
+</div>
+<p>The only issue appears to be that both <code class="docutils literal notranslate"><span class="pre">&quot;pg&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;PG&quot;</span></code> are used</p>
+</section>
+<section id="changing-a-variable-type">
+<h2>Changing a Variable Type<a class="headerlink" href="#changing-a-variable-type" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">as.numeric()</span></code> to convert the variable from character to numeric:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">)</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1]  18  19  NA  20  22  22 -20  18  21
+[1] &quot;numeric&quot;
+</pre></div>
+</div>
+<p>The empty string, <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, is converted to <code class="docutils literal notranslate"><span class="pre">NA</span></code>, which R uses to represent a missing value.</p>
+<p>The remaining issue is the value <code class="docutils literal notranslate"><span class="pre">-20</span></code>. What to do depends on your knowledge of the study and the data-entry process. If there is evidence that this was intended to be <code class="docutils literal notranslate"><span class="pre">20</span></code>, replace it:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">[</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-20</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">20</span>
+</pre></div>
+</div>
+<p>If the intended value is uncertain, it may be more appropriate to replace <code class="docutils literal notranslate"><span class="pre">-20</span></code> with <code class="docutils literal notranslate"><span class="pre">NA</span></code> instead:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="p">[</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_age</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-20</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NA</span>
+</pre></div>
+</div>
+<p>Finally, we can fix our <code class="docutils literal notranslate"><span class="pre">pcp_edu_level</span></code> variable in the same way:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">[</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;pg&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;PG&#39;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You might be wondering why we did not use <code class="docutils literal notranslate"><span class="pre">as.numeric()</span></code> immediately. R cannot always convert a character string into a number. When it encounters a value it cannot interpret as numeric, it converts that value to <code class="docutils literal notranslate"><span class="pre">NA</span></code> and displays a warning.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">myNumbers</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;three&quot;</span><span class="p">)</span>
+
+<span class="nf">as.numeric</span><span class="p">(</span><span class="n">myNumbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1]  1  2 NA
+Warning message:
+NAs introduced by coercion
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;2&quot;</span></code> are successfully converted to numeric values, but <code class="docutils literal notranslate"><span class="pre">&quot;three&quot;</span></code> cannot be converted and becomes <code class="docutils literal notranslate"><span class="pre">NA</span></code>.</p>
+<p>In the earlier example, converting <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> before replacing <code class="docutils literal notranslate"><span class="pre">&quot;eighteen&quot;</span></code> would have turned that value into <code class="docutils literal notranslate"><span class="pre">NA</span></code>. We would then lose the information that the participant’s age had been recorded as <code class="docutils literal notranslate"><span class="pre">&quot;eighteen&quot;</span></code>.</p>
+</div>
+</section>
+<section id="duplicate-rows">
+<h2>Duplicate Rows<a class="headerlink" href="#duplicate-rows" title="Link to this heading">#</a></h2>
+<p>It is good practice to check whether a dataset contains duplicate rows. A duplicate row is one where every value is identical to a row that appeared earlier in the data frame.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">duplicated()</span></code> to identify them:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">duplicated</span><span class="p">(</span><span class="n">messyDat</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+</pre></div>
+</div>
+<p>The output contains one logical value for each row:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code> means that the row is not a duplicate of an earlier row.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code> means that the row duplicates an earlier row.</p></li>
+</ul>
+<p>Here, the sixth row is a duplicate. Whether it should be removed depends on the context. For example, it may be an accidental repeated data entry, or it could represent two different participants whose recorded values happen to be identical. In these data we have a unique participant identifier column so it seems very likely this is an accidental duplication.</p>
+<p>If you determine that duplicate rows should be removed, use <code class="docutils literal notranslate"><span class="pre">!duplicated()</span></code> to retain only the first occurrence of each row:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">messyDat</span><span class="p">[</span><span class="o">!</span><span class="nf">duplicated</span><span class="p">(</span><span class="n">messyDat</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">duplicated(messyDat)</span></code> returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> for rows that duplicate an earlier row.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!</span></code> means “not”, so <code class="docutils literal notranslate"><span class="pre">!duplicated(messyDat)</span></code> returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> for rows that should be kept.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">messyDat[rows,</span> <span class="pre">columns]</span></code> subsets a data frame. The logical filter before the comma selects rows; leaving nothing after the comma means “keep all columns”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;-</span></code> assigns the resulting, de-duplicated data frame back to <code class="docutils literal notranslate"><span class="pre">messyDat</span></code>.</p></li>
+</ul>
+<p>In other words, this code keeps every non-duplicate row, retains all variables, and overwrites <code class="docutils literal notranslate"><span class="pre">messyDat</span></code> with the cleaned version.</p>
+</section>
+<section id="finding-nas">
+<h2>Finding NAs<a class="headerlink" href="#finding-nas" title="Link to this heading">#</a></h2>
+<p>It is useful to know how many <code class="docutils literal notranslate"><span class="pre">NA</span></code> values there are in your data set and where they are. One way to get a quick overview is to use the <code class="docutils literal notranslate"><span class="pre">colSums()</span></code> function:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">colSums</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">messyDat</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> pcp_id        pcp_age   congruent_rt incongruent_rt  pcp_edu_level  completed_exp 
+     1              1              0              1              0              0 
+</pre></div>
+</div>
+<p>This works in two steps:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is.na(messyDat)</span></code> checks every cell in the data frame and returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> where the value is missing (<code class="docutils literal notranslate"><span class="pre">NA</span></code>) and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> otherwise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colSums()</span></code> adds these logical values within each column. In R, <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> is treated as <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> as <code class="docutils literal notranslate"><span class="pre">0</span></code>, so the result is the number of missing values in each variable.</p></li>
+</ul>
+<p>The output tells us that there is one missing value in the <code class="docutils literal notranslate"><span class="pre">pcp_id</span></code> column, one in the <code class="docutils literal notranslate"><span class="pre">pcp_age</span></code> column and one in the <code class="docutils literal notranslate"><span class="pre">incongruent_rt</span></code> column. What you should do about these is again a matter of judgment. If age has been collected to describe the sample, a missing value is probably not something to worry about. A missing participant identifier is more unusual, so let’s have a look at that row:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_id</span><span class="p">),]</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  pcp_id pcp_age congruent_rt incongruent_rt pcp_edu_level completed_exp
+9   &lt;NA&gt;      21         2.89           3.91            UG         FALSE
+</pre></div>
+</div>
+<p>By inspecting this row we can see that the participant did not complete the experiment as shown by the <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> value in the <code class="docutils literal notranslate"><span class="pre">completed_exp</span></code> column. We should probably remove this participant:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">messyDat</span><span class="p">[</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_id</span><span class="p">),]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The output above told us that the row with missing <code class="docutils literal notranslate"><span class="pre">pcp_id</span></code> was row 9. So we could have removed that row like this:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">messyDat</span><span class="p">[</span><span class="m">-9</span><span class="p">,]</span>
+</pre></div>
+</div>
+<p>This would work for the current version of the dataset. The <code class="docutils literal notranslate"><span class="pre">-9</span></code> means “exclude row 9”, while the comma indicates that all columns should be retained.</p>
+<p>However, hard-coding row numbers is usually not good practice. If the data are sorted differently, new rows are added, or another row is removed earlier in the cleaning process, the row with the missing value may no longer be row 9. The code could then remove the wrong participant.</p>
+<p>Filtering based on the condition you actually care about is more reliable.</p>
+</div>
+</section>
+<section id="factors-and-categorical-variables">
+<h2>Factors and Categorical Variables<a class="headerlink" href="#factors-and-categorical-variables" title="Link to this heading">#</a></h2>
+<p>Some variables represent <strong>categories</strong> rather than numerical quantities. For example, a participant’s highest level of education might be recorded as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;school&quot; &quot;UG&quot; &quot;PG&quot; 
+</pre></div>
+</div>
+<p>These values are labels, not measurements. It would not make sense to calculate their mean or add them together.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">messyDat</span></code> dataset, <code class="docutils literal notranslate"><span class="pre">pcp_edu_level</span></code> contains participants’ education levels. It was initially imported as a character variable, but it is better represented as a <strong>factor</strong>.</p>
+<section id="why-use-factors">
+<h3>Why Use Factors?<a class="headerlink" href="#why-use-factors" title="Link to this heading">#</a></h3>
+<p>A factor is R’s data type for categorical variables. It stores a fixed set of possible categories, known as <strong>levels</strong>.</p>
+<p>Using a factor helps you to:</p>
+<ul class="simple">
+<li><p>Make it explicit that a variable contains categories.</p></li>
+<li><p>Control the order in which categories appear in tables and plots.</p></li>
+<li><p>Detect inconsistent category labels, such as <code class="docutils literal notranslate"><span class="pre">&quot;PG&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;pg&quot;</span></code>.</p></li>
+<li><p>Use an appropriate reference category in statistical models.</p></li>
+</ul>
+</section>
+<section id="converting-to-a-factor">
+<h3>Converting to a Factor<a class="headerlink" href="#converting-to-a-factor" title="Link to this heading">#</a></h3>
+<p>We already standardised the labels earlier, so we can now convert directly using <code class="docutils literal notranslate"><span class="pre">factor()</span></code></p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check its type and levels:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">class</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+<span class="nf">levels</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;factor&quot;
+
+[1] &quot;PG&quot;     &quot;School&quot; &quot;UG&quot;    
+</pre></div>
+</div>
+<p>By default, R orders factor levels alphabetically. This affects the order used in tables, plots, and some statistical output.</p>
+</section>
+<section id="setting-a-meaningful-order">
+<h3>Setting a Meaningful Order<a class="headerlink" href="#setting-a-meaningful-order" title="Link to this heading">#</a></h3>
+<p>Education levels have a natural order, so it is useful to specify it explicitly:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span>
+<span class="w">  </span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">,</span>
+<span class="w">  </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;School&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;UG&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PG&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="n">ordered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">levels</span></code> argument defines the categories and their order. Setting <code class="docutils literal notranslate"><span class="pre">ordered</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> tells R that these categories have a meaningful progression.</p>
+<p>Check the result:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">levels</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[1] &quot;School&quot; &quot;UG&quot;     &quot;PG&quot;  
+</pre></div>
+</div>
+</section>
+<section id="counting-participants-in-each-category">
+<h3>Counting Participants in Each Category<a class="headerlink" href="#counting-participants-in-each-category" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">table()</span></code> to count participants in each education category:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">table</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which produces:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>School     UG     PG 
+     3      2      2 
+</pre></div>
+</div>
+<p>If we had missing values in the table, we could include them with:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">table</span><span class="p">(</span><span class="n">messyDat</span><span class="o">$</span><span class="n">pcp_edu_level</span><span class="p">,</span><span class="w"> </span><span class="n">useNA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ifany&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Factors are R’s way of representing categorical variables. Before converting a variable to a factor, it is worth checking its unique values and standardising any inconsistent labels. The <code class="docutils literal notranslate"><span class="pre">levels</span></code> argument lets you define both the categories and their order, which matters for tables, plots, and statistical models. When categories have a natural progression, as education levels do, setting <code class="docutils literal notranslate"><span class="pre">ordered</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> makes that structure explicit.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1.Importing-Inspecting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Importing and Inspecting Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3.Reshape-Wide-Long.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Reshaping and Wrangling</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renaming-columns">Renaming Columns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-unique-values">Identifying Unique Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-values">Replacing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-a-variable-type">Changing a Variable Type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicate-rows">Duplicate Rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-nas">Finding NAs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#factors-and-categorical-variables">Factors and Categorical Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-factors">Why Use Factors?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-a-factor">Converting to a Factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-meaningful-order">Setting a Meaningful Order</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-participants-in-each-category">Counting Participants in Each Category</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr George Farmer & Dr Martyn McFarquhar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
